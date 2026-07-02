@@ -4,8 +4,6 @@
 
 import { getApiUrl } from "./app-config";
 
-const API_URL = getApiUrl();
-
 let accessToken = null;
 let refreshPromise = null;
 
@@ -19,7 +17,7 @@ export function getAccessToken() {
 
 async function refreshAccessToken() {
   try {
-    const res = await fetch(`${API_URL}/auth/refresh`, {
+    const res = await fetch(`${getApiUrl()}/auth/refresh`, {
       method: "POST",
       credentials: "include",
     });
@@ -57,7 +55,7 @@ async function apiRequest(path, options = {}) {
     reqHeaders["Authorization"] = `Bearer ${accessToken}`;
   }
 
-  let res = await fetch(`${API_URL}${path}`, {
+  let res = await fetch(`${getApiUrl()}${path}`, {
     method,
     headers: reqHeaders,
     body: body ? JSON.stringify(body) : undefined,
@@ -68,7 +66,7 @@ async function apiRequest(path, options = {}) {
     const newToken = await ensureFreshToken();
     if (newToken) {
       reqHeaders["Authorization"] = `Bearer ${newToken}`;
-      res = await fetch(`${API_URL}${path}`, {
+      res = await fetch(`${getApiUrl()}${path}`, {
         method,
         headers: reqHeaders,
         body: body ? JSON.stringify(body) : undefined,
