@@ -1,0 +1,18 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: booknest_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: booknest
+      POSTGRES_PASSWORD: booknest_dev
+      POSTGRES_DB: booknest
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
